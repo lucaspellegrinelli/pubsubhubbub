@@ -342,7 +342,7 @@ class PubSubHubbub extends Stream {
             signature = (signatureParts.pop() || '').toLowerCase();
 
             try {
-                hmac = crypto.createHmac(algo, this.secret);
+                hmac = crypto.createHmac(algo, crypto.createHmac("sha1", this.secret).update(topic).digest("hex"));
             } catch (E) {
                 return this._sendError(req, res, next, 403, 'Forbidden');
             }
